@@ -1,0 +1,7 @@
+{
+	"model": 12345,
+	"device": "1234567890123456",
+	"email": "my@email.tld",
+	"password": "MySuperPassword",
+	"no_token_autoextract": true
+}
