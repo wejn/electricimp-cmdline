@@ -1,20 +1,20 @@
 # Electric Imp code upload utility
 This Ruby script takes care of code upload from commandline to Electric Imp IDE.
 
-It is in no way endorsed by Electric Imp, Inc. and in fact, it uses
+It is in no way endorsed by Electric Imp, Inc. and in fact, *it uses
 unofficial REST API that might change at any moment (thus breaking
-this script).
+this script)*.
 
-It is based on [forum post by mikob](http://forums.electricimp.com/discussion/2533/alternative-for-those-who-don039t-like-the-web-ide) but slightly
+It is based on a [forum post by mikob](http://forums.electricimp.com/discussion/2533/alternative-for-those-who-don039t-like-the-web-ide) but slightly
 improved to suit my needs:
 
 - it can auto-fetch the token in several ways
 - it can login to the web api (and cache token)
 - no need to enter any commandline options, all specified within config file
 
-Bear in mind this was developed on Linux, in Ruby and as a quickie. Unless
-you want to get your hands dirty (and know a bit of Ruby), you might have
-a hard time getting this to work.
+Bear in mind this was developed on Linux, in Ruby, and as a quickie. You might
+need to get your hands dirty and know a bit of Ruby in order to get this
+script to work.
 
 ## Installation
 Install Ruby 2.0+, then install `json` and `sqlite3` gems.
