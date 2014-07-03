@@ -28,8 +28,7 @@ require 'net/https'
 module ElectricImp
 	VERSION = '0.1'
 
-	USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.132 Safari/537.36'
-	#USER_AGENT = 'imp-upload.rb/' + VERSION + '; (+https://github.com/wejn/electricimp-cmdline)'
+	USER_AGENT = 'imp-upload.rb/' + VERSION + '; (+https://github.com/wejn/electricimp-cmdline)'
 
 	module AccountAPI
 		LOGIN_URL = 'https://ide.electricimp.com/account/login'
