@@ -46,8 +46,15 @@ attempt to fetch your access token from your Firefox settings.
 If that fails, you can use other options to adjust.
 
 ## Config file and options
-Config file is always looked up in current directory, it is named `config.json`
-and root object should be Object with keys.
+There are two config files -- general one: `~/.electricimprc.json`,
+and project-specific one: `./config.json`.
+
+Syntax for both config files is the same -- JSON which has root object
+an Object with keys.
+
+Settings in project-specific config override general config. Thus
+it makes sense to use general config for username/password and
+project-specific for `model`, `device` and other settings.
 
 ### Model / device
 Keys `model` and `device` are mandatory.

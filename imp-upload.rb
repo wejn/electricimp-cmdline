@@ -251,11 +251,25 @@ end
 if __FILE__ == $0
 	AGENT_FILE = 'agent.nut'
 	DEVICE_FILE = 'device.nut'
+	DEFAULT_CONFIG_FILE = File.join(ENV['HOME'], '.electricimprc.json')
 	CONFIG_FILE = 'config.json'
 
-	config = nil
+	config = {}
 	begin
-		config = JSON.parse(File.open(CONFIG_FILE).read)
+		if FileTest.readable?(DEFAULT_CONFIG_FILE)
+			config.merge!(JSON.parse(File.open(DEFAULT_CONFIG_FILE).read))
+		end
+	rescue Object
+		STDERR.puts "Error loading default config: #$!, aborting."
+		exit 1
+	end
+
+	begin
+		if FileTest.readable?(CONFIG_FILE)
+			config.merge!(JSON.parse(File.open(CONFIG_FILE).read))
+		else
+			STDERR.puts "Warn: Can't read project config (#{CONFIG_FILE})"
+		end
 	rescue Object
 		STDERR.puts "Error loading config: #$!"
 		STDERR.puts "Put '#{CONFIG_FILE}' with 'device', 'model' keys to CWD."
