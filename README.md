@@ -53,8 +53,9 @@ Syntax for both config files is the same -- JSON which has root object
 an Object with keys.
 
 Settings in project-specific config override general config. Thus
-it makes sense to use general config for username/password and
-project-specific for `model`, `device` and other settings.
+it makes sense to use general config for `email`+`password` (and 
+perhaps `no_token_autoextract`) and the project-specific config
+for `model`, `device`, and other settings.
 
 ### Model / device
 Keys `model` and `device` are mandatory.
