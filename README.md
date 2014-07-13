@@ -1,4 +1,45 @@
-# Electric Imp code upload utility
+# Electric Imp code upload + code preprocessing utilities
+There are two scripts in this package:
+
+- `imp-nut-pp.rb`, a C-style preprocessor (very limited!)
+- `imp-upload.rb`, code upload tool.
+
+## `imp-nut-pp.rb`
+This Ruby script is a very limited C-style preprocessor for `*.nut` files.
+
+Basically it came from my need to re-use parts of codebase among different
+projects (thus the `#include` support) plus I felt that having basic control
+flow would be nice (`#ifdef`, etc).
+
+### Installation
+Install Ruby 2.0+, then place this script somewhere in your `$PATH`.
+
+### Usage
+Call it like:
+```bash
+imp-nut-pp.rb device.src.nut device.nut
+```
+which will pre-process `device.src.nut` into `device.nut`. If there's any
+sort of error during preprocessing, you get Ruby stacktrace and the output
+file is *not* touched. The output file is *atomically* rewritten if the
+preprocessing finishes successfully.
+
+Also note that you can omit output file, which will dump output to STDOUT.
+And you can also omit input file, which will take input from STDIN.
+
+Supported tags are:
+
+- `#include "file"`, which includes given file (the file is also pre-processed)
+- `#define VARIABLE [VALUE]`, which defines given variable
+- `#undef VARIABLE`, which undefines given variable
+- `#ifdef VARIABLE`, outputs iff `VARIABLE` is defined
+- `#ifndef VARIABLE`, outputs iff `VARIABLE` is NOT defined
+- `#else`, else block for preceding `#ifdef` or `#ifndef` block
+- `#endif`, end of preceding `#ifdef`, `#ifndef`, `#else` block
+
+In short, if you know C, you'll feel right at home. (I hope)
+
+## `imp-upload.rb`
 This Ruby script takes care of code upload from commandline to Electric Imp IDE.
 
 It is in no way endorsed by Electric Imp, Inc. and in fact, *it uses
@@ -16,7 +57,7 @@ Bear in mind this was developed on Linux, in Ruby, and as a quickie. You might
 need to get your hands dirty and know a bit of Ruby in order to get this
 script to work.
 
-## Installation
+### Installation
 Install Ruby 2.0+, then install `json` and `sqlite3` gems.
 
 To do the latter, run the following on a commandline:
@@ -27,7 +68,7 @@ gem install json sqlite3
 
 Finally place this script somewhere in your `$PATH`.
 
-## Usage
+### Usage
 Create `config.json` file with (at minimum) two keys:
 ```json
 {
@@ -45,7 +86,7 @@ By default (if no other keys are specified) the utility will
 attempt to fetch your access token from your Firefox settings.
 If that fails, you can use other options to adjust.
 
-## Config file and options
+### Config file and options
 There are two config files -- general one: `~/.electricimprc.json`,
 and project-specific one: `./config.json`.
 
@@ -53,11 +94,11 @@ Syntax for both config files is the same -- JSON which has root object
 an Object with keys.
 
 Settings in project-specific config override general config. Thus
-it makes sense to use general config for `email`+`password` (and 
+it makes sense to use general config for `email`+`password` (and
 perhaps `no_token_autoextract`) and the project-specific config
 for `model`, `device`, and other settings.
 
-### Model / device
+#### Model / device
 Keys `model` and `device` are mandatory.
 
 They determine where to upload your agent and device code.
@@ -69,7 +110,7 @@ model (and device) and look at the url. It should look like this:
 
 yielding model `12345` and device `1234567890123456`.
 
-### Token / authentication
+#### Token / authentication
 By default the script first tries to extract your token from Firefox,
 unless disabled by setting `no_token_autoextract` key to true.
 
@@ -86,7 +127,7 @@ Example commands:
 {
 	"token_command": ["sqlite3", "cookies.sqlite",
 		"SELECT value FROM moz_cookies WHERE baseDomain=\"electricimp.com\" and name=\"imp.token\""],
-	"token_command": ["ssh", "-q", "user@remotehost", 
+	"token_command": ["ssh", "-q", "user@remotehost",
 		"sqlite3 ~/.mozilla/firefox/*/cookies.sqlite \"SELECT value FROM moz_cookies WHERE baseDomain=\\\"electricimp.com\\\" and name=\\\"imp.token\\\"\""],
 }
 ```
@@ -97,7 +138,7 @@ to the IDE by specifying your `email` and `password`.
 The script will login and then cache the token as `~/.electricimp-token`.
 You can turn off the caching by setting `no_token_caching` key to true.
 
-### Code verification
+#### Code verification
 By default the script tries to verify code before uploading.
 You can turn that off by setting `no_verify` key to true.
 
