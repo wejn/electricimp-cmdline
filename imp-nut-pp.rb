@@ -78,7 +78,8 @@ module ElectricImp
 					dst.puts "// " + "=" * 75
 					dst.puts "// start of: #$2"
 					dst.puts "// " + "-" * 75
-					process(dst, $2, vars)
+					abs_path = File.expand_path($2, File.dirname(src))
+					process(dst, abs_path, vars)
 					dst.puts "// " + "-" * 75
 					dst.puts "// end of: #$2, #{src} continues with line #{l+2}"
 					dst.puts "// " + "=" * 75
