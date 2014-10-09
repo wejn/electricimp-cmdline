@@ -36,15 +36,16 @@ module ElectricImp
 		end
 
 		def open
-			tf = Tempfile.new(File.basename(@file), File.dirname(@file))
+			tf = nil
 			begin
+				tf = Tempfile.new(File.basename(@file), File.dirname(@file))
 				yield tf
+				tf.close
 				File.rename(tf, @file)
 				tf = nil
 				self
 			rescue Object
-				tf.close rescue nil
-				tf.unlink rescue nil
+				tf.close(true) if tf rescue nil
 				raise
 			end
 		end
